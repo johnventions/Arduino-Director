@@ -1,0 +1,32 @@
+{
+  "name": "director",
+  "version": "1.0.0",
+  "description": "Browser Animatronics Control System for Serial Port Applications",
+  "dependencies": {
+    "bootstrap": "^4.0.0-alpha.6",
+    "express": "^4.16.4",
+    "minify": "^4.1.0",
+    "serialport": "^7.1.4",
+    "socket.io": "1.7.4"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.7.1",
+    "connect-mongo": "^2.0.3",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-stylus": "^2.7.0",
+    "gulp-uglify": "^3.0.1",
+    "jquery": "^3.3.1",
+    "merge-stream": "^1.0.1",
+    "mongodb": "^3.1.13",
+    "mongoose": "^5.4.9",
+    "vue": "^2.5.22"
+  },
+  "scripts": {
+    "start": "gulp && node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

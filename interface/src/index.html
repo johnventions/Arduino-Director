@@ -1,0 +1,116 @@
+<html>
+    <head>
+        <title>Director</title>
+        <link rel="stylesheet" href="/vendor.css">
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    <body>
+        <div id="director">
+        <main class='container-fluid' v-cloak>
+            <div class='row'>
+                <div class='col-3'>
+                    <h5>Devices</h5>
+                    <dl>
+                        <dd v-for="port in ports">
+                                {{ port.comName }}
+                                <span class='btn btn-primary' v-on:click="connect(port)" v-if="activePort == null">Connect</span>
+                                <span class='btn btn-primary' v-on:click="disconnect()" v-if="activePort == port.comName">Disconnect</span>
+                        </dd>
+                    </dl>
+                    <div v-if="activePort">
+                        <h5>Actors</h5>
+                        <div v-for="actor in actors">
+                            {{ actor.id }} | {{ actor.name }}
+                        </div>
+                    </div>
+                    <div v-if="activePort">
+                            <h5>Buttons</h5>
+                            <div v-for="button in buttons">
+                                {{ button.id }} | {{ button.name }}
+                            </div>
+                        </div>
+                    <div v-if="activePort">
+                        <span class='btn btn-primary' v-on:click="getOptions()">Refresh</span>
+                        <h5>Commands</h5>
+                        <input v-model="command">
+                        <span class='btn btn-primary' v-on:click="sendCommand(command)">Send</span>
+                    </div>
+
+                </div>
+                <div class='col-9'>
+                    <div id='machine-list' v-if="activeMachine == null">
+                        <h5>Machines</h5>
+                        <div v-for="machine in machines" class='row'>
+                                <div class='col-10'>
+                                    {{ machine.name }}
+                                </div>
+                                <div class='col-2'>
+                                    <span class='btn btn-primary'
+                                        v-on:click="selectMachine(machine)">
+                                            Select
+                                        </span>
+                                </div>
+                                
+                            </div>
+                            <span class='btn btn-primary' v-on:click="addSequence()">Add Machine</span>
+                    </div>
+                    <div id="sequence-list" v-if="activeMachine && activeSequence == null">
+                            <h5>Sequences</h5>
+                            <div v-for="sequence in sequences" class='row'>
+                                <div class='col-10'>
+                                        {{ sequence.name }}
+                                </div>
+                                <div class='col-2'>
+                                        <span class='btn btn-primary'
+                                            v-on:click="selectSequence(sequence)">Edit</span>
+                                </div>
+                            </div>
+                            <span class='btn btn-primary' v-on:click="addSequence()">Add Sequence</span>
+                    </div>
+                    <div id="sequence-list" v-if="activeSequence">
+                        <h4>{{ activeSequence.name }}</h4>
+                        <span class='btn btn-success' v-on:click="playSequence(activeSequence)">
+                            Play
+                        </span>
+                        <div v-for="component in activeSequence.components">
+                            <div  class="row">
+                                <div class='col-2'>
+                                    <input v-model="component.name">
+                                    <div class='preview-container'>
+                                        <span class='preview preview-1'></span>
+                                        <span class='preview preview-2' v-bind:style="{ transform: component.getAngle() }"></span>
+                                    </div>
+                                </div>
+                                <div class='col-10'>
+                                    <svg height="200" width="100%" v-on:click="component.click($event, component)">
+                                        <line :x1="component.startX()" :x2="component.startX()" y1="0" y2="180" stroke="black" stroke-width="0.5" />
+                                        <line :x1="intervalPos()" :x2="intervalPos()" y1="0" y2="180" stroke="red" stroke-width="0.5" />
+                                        <line :x1="component.startX()" x2="100%" y1="180" y2="180" stroke="black" stroke-width="0.5" />
+                                        <circle v-for="(data, i) in component.data"
+                                            :cx="component.posX(i)"
+                                            :cy="component.posY(i)"
+                                            v-on:mousedown="component.startDrag($event, i)"
+                                            v-on:mouseup="component.stopDrag($event, i)"
+                                            r="5" stroke="black" stroke-width="1" fill="red"/>
+                                            <text v-for="n in 4"
+                                                x="0" :y="activeSequence.graphLabelPosY(n)">
+                                                {{ activeSequence.graphLabelY(n) }}
+                                            </text>
+                                            <text v-for="n in activeSequence.graphLength()"
+                                                :x="activeSequence.graphLabelPosX(n)" y="195">
+                                                {{ n }}
+                                            </text>
+                                        </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <span class='btn btn-primary' v-on:click="addComponent()">Add Component</span>
+                    </div>                    
+                </div>
+            </div>
+        </main>
+    </div>
+    </body>
+    <script src="/vendor.js"></script>
+    <script src="/main.js"></script>
+</html>

@@ -36,17 +36,19 @@ function initiate() {
                     this.machines = data;
                 }.bind(this));
             },
-            getSequences: function() {
-                $.get("/api/machines/" + this.activeMachine + "/sequences", function(data) {
-                    this.castSequences(data);
+            getSequences: function(machine) {
+                $.get("/api/machines/" + machine._id + "/sequences", function(data) {
+                    this.activeMachine = machine._id;
+                    this.sequences = this.castSequences(data);
                 }.bind(this));
             },
             castSequences: function(seq) {
-                this.sequences = [];
+                 var sequences = [];
                 seq.forEach(function(s) {
                     var x = Object.assign(new Sequence(s.name), s);
-                    this.sequences.push(x);
+                    sequences.push(x);
                 }.bind(this));
+                return sequences;
             },
             connect: function(port) {
                 console.log("Connecting");
@@ -67,8 +69,7 @@ function initiate() {
                 this.command = "";
             },
             selectMachine: function(machine) {
-                this.activeMachine = machine._id;
-                this.getSequences();
+                this.getSequences(machine);
             },
             selectSequence: function(sequence) {
                 sequence.components = [];
@@ -77,6 +78,13 @@ function initiate() {
                     this.castComponents(data);
                 }.bind(this));
             },
+            saveSequence: function() {
+                $.post("/api/machines/" + this.activeMachine + "/sequences/" + this.activeSequence._id, 
+                    this.activeSequence,
+                    function(data) {
+                        console.log(data);
+                    }.bind(this));
+            },
             castComponents: function(seq) {
                 var comp = [];
                 seq.components.forEach(function(val) {
@@ -84,16 +92,38 @@ function initiate() {
                 }.bind(this));
                 this.activeSequence.components = comp;
             },
+            addMachine: function() {
+                var pkg = {
+                    name: "New Machine"
+                };
+                $.post("/api/machines",
+                    pkg,
+                    function(data) {
+                        this.selectMachine(data);
+                    }.bind(this)
+                    );
+            },
             addSequence: function() {
-                this.sequences.push(new Sequence("New Sequence"));
-                this.activeSequence = this.sequences[this.sequences.length - 1];
+                var pkg = {
+                    name: "New Sequence"
+                };
+                $.post("/api/machines/" + this.activeMachine + "/sequences",
+                    pkg,
+                    function(data) {
+                        var s = this.castSequences([data]);
+                        this.sequences.push(s[0]);
+                        this.activeSequence = this.sequences[this.sequences.length - 1];
+                    }.bind(this)
+                    );
             },
             addComponent: function() {
                 var pkg = {
                     name: "New Component"
                 };
-                $.post("/api/machines/" + this.activeMachine + "/sequences/" + this.activeSequence._id + "/components", pkg, function(data) {
-                    this.activeSequence.components.push(Object.assign(new Component(), data))
+                $.post("/api/machines/" + this.activeMachine + "/sequences/" + this.activeSequence._id + "/components",
+                    pkg,
+                    function(data) {
+                        this.activeSequence.components.push(Object.assign(new Component(), data));
                 }.bind(this));
             },
             linkMotors: function(seq) {

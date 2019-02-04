@@ -48,7 +48,12 @@ function vendorCSS() {
         .pipe(dest('dist/'));
 }
 
-exports.default = parallel(vendorJS, javascript, vendorCSS, css);
-exports.build = parallel(vendorJS, javascript, vendorCSS, css);
+function fonts() {
+    return src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
+        .pipe(dest('dist/webfonts'));
+}
+
+exports.default = parallel(vendorJS, javascript, vendorCSS, css, fonts);
+exports.build = parallel(vendorJS, javascript, vendorCSS, css, fonts);
 exports.js = parallel(vendorJS, javascript);
-exports.css = parallel(vendorCSS, css);
+exports.css = parallel(vendorCSS, css, fonts);

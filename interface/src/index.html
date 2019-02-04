@@ -52,7 +52,8 @@
                                 </div>
                                 
                             </div>
-                            <span class='btn btn-primary' v-on:click="addSequence()">Add Machine</span>
+                            <span class='btn btn-primary' 
+                                v-on:click="addMachine()">Add Machine</span>
                     </div>
                     <div id="sequence-list" v-if="activeMachine && activeSequence == null">
                             <h5>Sequences</h5>
@@ -68,10 +69,22 @@
                             <span class='btn btn-primary' v-on:click="addSequence()">Add Sequence</span>
                     </div>
                     <div id="sequence-list" v-if="activeSequence">
-                        <h4>{{ activeSequence.name }}</h4>
-                        <span class='btn btn-success' v-on:click="playSequence(activeSequence)">
-                            Play
-                        </span>
+                        <div class='row'>
+                            <div class='col-10'>
+                                <span class='btn btn-danger' v-on:click="playSequence(activeSequence)">
+                                    Play
+                                    <i class="fas fa-play-circle"></i>
+                                </span>
+                                <h4>{{ activeSequence.name }}</h4>
+    
+                            </div>
+                            <div class='col-2'>
+                                <span class='btn btn-success' v-on:click="saveSequence()">
+                                    Save
+                                    <i class="far fa-save"></i>
+                                </span>
+                            </div>
+                        </div>
                         <div v-for="component in activeSequence.components">
                             <div  class="row">
                                 <div class='col-2'>

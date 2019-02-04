@@ -180,6 +180,18 @@ app.get("/api/machines/:id/sequences/:seq", function(req, res) {
     });
 });
 
+
+app.post("/api/machines/:id/sequences/:seq", function(req, res) {
+    var seq = req.body;
+    Machine.findOne({_id: req.params.id}, function(err, machine) {
+        var targ = machine.sequences.id(req.params.seq);
+        Object.assign(targ, seq);
+        machine.save(function() {
+            res.status(201).json(seq);
+        });
+    });
+});
+
 app.post("/api/machines/:id/sequences/:seq/components", function(req, res) {
     var comp = req.body;
     comp._id = new mongoose.Types.ObjectId;

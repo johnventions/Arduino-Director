@@ -8,8 +8,10 @@ const { parallel } = require('gulp');
 
 
 var jsVendor = [
+    "node_modules/es6-promise/dist/es6-promise.auto.min.js",
     "node_modules/jquery/dist/jquery.min.js",
     "node_modules/vue/dist/vue.js",
+    "node_modules/vuex/dist/vuex.js",
     "node_modules/socket.io-client/dist/socket.io.min.js"
 ];
 
@@ -34,7 +36,7 @@ function javascript() {
 }
 
 function css() {
-    return src("src/styl/*.styl")
+    return src("src/styl/styles.styl")
         .pipe(concat("style.styl"))
         .pipe(stylus())
         .pipe(rename("styles.css"))

@@ -38,45 +38,55 @@
 
                 </div>
                 <div class='col-9'>
-                    <div id='machine-list' v-if="activeMachine == null">
-                        <h5>Machines</h5>
-                        <div v-for="machine in machines" class='row'>
-                                <div class='col-10'>
-                                    {{ machine.name }}
-                                </div>
-                                <div class='col-2'>
-                                    <span class='btn btn-primary'
-                                        v-on:click="selectMachine(machine)">
-                                            Select
-                                        </span>
-                                </div>
-                                
-                            </div>
-                            <span class='btn btn-primary' 
-                                v-on:click="addMachine()">Add Machine</span>
-                    </div>
+                    <director-machines
+                        v-if="activeMachine == null"
+                        :machines="machines"
+                        v-on:select-machine="selectMachine($event)"
+                        v-on:add-machine="addMachine()"
+                        ></director-machines>
                     <div id="sequence-list" v-if="activeMachine && activeSequence == null">
                             <h5>Sequences</h5>
-                            <div v-for="sequence in sequences" class='row'>
-                                <div class='col-10'>
-                                        {{ sequence.name }}
-                                </div>
-                                <div class='col-2'>
-                                        <span class='btn btn-primary'
-                                            v-on:click="selectSequence(sequence)">Edit</span>
-                                </div>
-                            </div>
+                            <director-list-item 
+                                v-for="sequence in sequences"
+                                :key="sequence._id"
+                                :item="sequence"
+                                v-on:select-item="selectSequence(sequence)"/>
                             <span class='btn btn-primary' v-on:click="addSequence()">Add Sequence</span>
                     </div>
                     <div id="sequence-list" v-if="activeSequence">
                         <div class='row'>
                             <div class='col-10'>
-                                <span class='btn btn-danger' v-on:click="playSequence(activeSequence)">
-                                    Play
-                                    <i class="fas fa-play-circle"></i>
-                                </span>
+                                <div class='btn-group'>
+                                    <span class='btn btn-primary'
+                                        v-on:click="zoom(-10)">
+                                            <i class="fas fa-search-minus"></i>
+                                    </span>
+                                    <span class='btn btn-primary'
+                                        v-on:click="zoom(10)">
+                                            <i class="fas fa-search-plus"></i>
+                                    </span>
+                                </div>
+                                <div class='btn-group'>
+                                        <span class='btn btn-primary'
+                                            v-on:click="shift(0.25)">
+                                                <i class="fas fa-arrow-left"></i>
+                                        </span>
+                                        <span class='btn btn-primary'
+                                            v-on:click="shift(-0.25)">
+                                                <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                    </div>
+                                <div class='btn-group'>
+                                    <span class='btn btn-danger'
+                                        v-on:click="playSequence(activeSequence)">
+                                        <i class="fas fa-play-circle"></i>
+                                    </span>
+                                    <span class='btn btn-danger'
+                                        v-on:click="playSequence(activeSequence)">
+                                        <i class="far fa-pause-circle"></i>
+                                    </span>
+                                </div>
                                 <h4>{{ activeSequence.name }}</h4>
-    
                             </div>
                             <div class='col-2'>
                                 <span class='btn btn-success' v-on:click="saveSequence()">
@@ -85,38 +95,11 @@
                                 </span>
                             </div>
                         </div>
-                        <div v-for="component in activeSequence.components">
-                            <div  class="row">
-                                <div class='col-2'>
-                                    <input v-model="component.name">
-                                    <div class='preview-container'>
-                                        <span class='preview preview-1'></span>
-                                        <span class='preview preview-2' v-bind:style="{ transform: component.getAngle() }"></span>
-                                    </div>
-                                </div>
-                                <div class='col-10'>
-                                    <svg height="200" width="100%" v-on:click="component.click($event, component)">
-                                        <line :x1="component.startX()" :x2="component.startX()" y1="0" y2="180" stroke="black" stroke-width="0.5" />
-                                        <line :x1="intervalPos()" :x2="intervalPos()" y1="0" y2="180" stroke="red" stroke-width="0.5" />
-                                        <line :x1="component.startX()" x2="100%" y1="180" y2="180" stroke="black" stroke-width="0.5" />
-                                        <circle v-for="(data, i) in component.data"
-                                            :cx="component.posX(i)"
-                                            :cy="component.posY(i)"
-                                            v-on:mousedown="component.startDrag($event, i)"
-                                            v-on:mouseup="component.stopDrag($event, i)"
-                                            r="5" stroke="black" stroke-width="1" fill="red"/>
-                                            <text v-for="n in 4"
-                                                x="0" :y="activeSequence.graphLabelPosY(n)">
-                                                {{ activeSequence.graphLabelY(n) }}
-                                            </text>
-                                            <text v-for="n in activeSequence.graphLength()"
-                                                :x="activeSequence.graphLabelPosX(n)" y="195">
-                                                {{ n }}
-                                            </text>
-                                        </svg>
-                                </div>
-                            </div>
-                        </div>
+                        <director-component
+                            v-for="component in activeSequence.components"
+                            :key="component._id"
+                            :component="component">
+                            </director-component>
                         <span class='btn btn-primary' v-on:click="addComponent()">Add Component</span>
                     </div>                    
                 </div>

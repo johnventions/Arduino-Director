@@ -10,18 +10,6 @@ class Component {
         this.currentPosition = 0;
         this.motorID = -1;
     }
-    posX(i){
-        if (i < 0) {
-            return 0;
-        }
-        return (this.data[i].x * 50 + offset);
-    }
-    posY(i) {
-        if (i < 0) {
-            return 180;
-        }
-        return 180 - this.data[i].y;
-    }
     startDrag(e, i) {
         if (e.shiftKey) {
             this.data.splice(i, 1);
@@ -34,7 +22,7 @@ class Component {
         director.$set(this.data, i, n);
     }
     stopDrag(e, i) {
-        var x = ($(selectedElement).attr("cx") - offset) / scale;
+        var x = ($(selectedElement).attr("cx") - offset) / store.state.scale;
         var y = 180 - $(selectedElement).attr("cy");
         this.updatePoint(x, y, i);
         selectedElement = null;
@@ -48,7 +36,7 @@ class Component {
         var rect = e.target.getBoundingClientRect();
         var x = (e.clientX - rect.left) - offset; 
         var y = e.clientY - rect.top;
-        this.data.push({x: x/scale, y: 180 - y});
+        this.data.push({x: (x/store.state.scale) - store.state.xOffset, y: 180 - y});
     }
     startX() {
         return offset;

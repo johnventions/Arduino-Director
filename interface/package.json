@@ -4,10 +4,12 @@
   "description": "Browser Animatronics Control System for Serial Port Applications",
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
+    "es6-promise": "^4.2.5",
     "express": "^4.16.4",
     "minify": "^4.1.0",
     "serialport": "^7.1.4",
-    "socket.io": "1.7.4"
+    "socket.io": "1.7.4",
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.7.1",

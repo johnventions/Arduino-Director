@@ -4,6 +4,7 @@ var socket = io();
 function initiate() {
     director = new Vue({
         el: "#director",
+        store,
         data: {
             activePort: null,
             ports: null,
@@ -139,6 +140,7 @@ function initiate() {
                 }.bind(this));
             },
             playSequence: function(seq) {
+                this.$store.commit('setTime', 0);
                 this.curTime = 0;
                 this.lastTime = new Date().getTime();
                 this.linkMotors(seq);
@@ -154,6 +156,7 @@ function initiate() {
                             this.processData(comp, items);
                         }
                     }.bind(this));
+                    this.$store.commit('increaseTime', delta);
                     this.curTime += delta;
                     this.lastTime = d2;
                     if (this.curTime > seq.duration) {
@@ -171,8 +174,11 @@ function initiate() {
                     }
                 }.bind(this));
             },
-            intervalPos: function() {
-                return (this.curTime * scale) + offset;
+            zoom: function(z) {
+                this.$store.commit("changeScale", z);
+            },
+            shift: function(x) {
+                this.$store.commit("changeOffset", x);
             }
         },
         created: function() {

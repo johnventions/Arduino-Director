@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "Director.h"
 
-#include <Servo.h>
+#include "Servo.h"
 
 String Actor::GetName() {
    return name;
@@ -12,13 +12,19 @@ void Actor::SetName(String _name) {
 }
 
 ActorServo::ActorServo(String _name, int _pin) {
-   servo.attach(_pin);
+   //myservo.attach(_pin);
+   pin = _pin;
    SetName(_name);
 }
 
+void ActorServo::Start() {
+   myservo.attach(pin);
+   Serial.println("Pin " + String(pin) + " started");
+}
+
 void ActorServo::Move(int deg) {
-   servo.write(deg);
-   Serial.println("Servo moved to " + String(deg));
+   myservo.write(deg);
+   Serial.println("Servo " + GetName() + " moved to " + String(deg));
 }
 
 ActorButton::ActorButton(String _name, int _pin) {
@@ -71,6 +77,14 @@ void Director::Options() {
    Serial.println(output);
 }
 
+
+void Director::StartServos() {
+   Serial.println("Starting");
+   for (int i=0; i < servoQuantity; i++) {
+      actors[i].Start();
+   }
+}
+
 void Director::Listen(){
    while(Serial.available()) {
       incoming = Serial.readString();
@@ -88,7 +102,7 @@ void Director::Listen(){
    }
    for (int i=0; i < buttonQuantity; i++) {
       if(buttons[i].Read() == 1) {
-         Serial.println("B:" + i );
+         Serial.println("B:" + String(i) );
       }
    }
 }

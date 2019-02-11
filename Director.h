@@ -19,9 +19,11 @@ class Actor {
 class ActorServo : public Actor {
   public:
     ActorServo(String _name, int _pin);
+    void Start();
     void Move(int deg);
   private:
-    Servo servo;
+    Servo myservo;
+    int pin;
 };
 
 class ActorButton : public Actor {
@@ -43,6 +45,7 @@ class Director {
     void Assign(ActorServo *_actors, int _qty);
     void Assign(ActorButton *_buttons, int _qty);
     void Options();
+    void StartServos();
     void Listen();
   private:
     ActorServo *actors;

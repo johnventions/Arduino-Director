@@ -1,0 +1,30 @@
+// LAYOUT ----------------------
+$base-size = 16 // base size for font and element sizes
+$rem = 1/$base-size // FOR MIXIN USE ONLY, convert px to rem (E.g. 12*$rem rem)
+$px = $base-size // FOR MIXIN USE ONLY, convert rem to px (E.g. 12*$px rem)
+
+base-font-size = ($base-size/16)*100% // variable for stylus-type-utils
+support-for-ie = true // Set to 'false' for no 'px' output with 'rem'
+
+$mobile-viewport = 320
+
+// RESPONSIVE ----------------------
+// use EM for now because iOS 6.1 doesn't support REMs
+$phone-small-width = 480/$base-size em
+$phone-width = 767/$base-size em
+$tablet-width = 768/$base-size em
+$desktop-width = 992/$base-size em
+$desktop-large-width = 1200/$base-size em
+$desktop-xl-width = 1440/$base-size em
+$desktop-hd-width = 1600/$base-size em
+
+$phone-small-down = 'screen and (max-width: ' + $phone-small-width + ')'
+$phone-down = 'screen and (max-width: ' + $phone-width + ')'
+$tablet-down = 'screen and (max-width: ' + ($desktop-width - .062) + ')'
+
+$tablet-up = 'screen and (min-width: ' + $tablet-width + ')'
+$desktop-up = 'screen and (min-width: ' + $desktop-width + ')'
+$desktop-large-down = 'screen and (max-width: ' + ($desktop-large-width - 0.01) + ')'
+$desktop-large-up = 'screen and (min-width: ' + $desktop-large-width + ')'
+$desktop-xl-up = 'screen and (min-width: ' + $desktop-xl-width + ')'
+$desktop-hd-up = 'screen and (min-width: ' + $desktop-hd-width + ')'

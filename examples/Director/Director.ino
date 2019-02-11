@@ -1,26 +1,31 @@
+#include <Servo.h>
 #include <Director.h>
 
+
 Director director;
+Servo myservo;
+
 
 ActorServo actors[] = {
-  ActorServo("Mouth", 7),
+  ActorServo("Mouth", 9),
   ActorServo("LeftEye", 8),
-  ActorServo("RightEye", 9),
-  ActorServo("Neck", 10),
+  ActorServo("RightEye", 7)
 };
 
 ActorButton buttons[] = {
-  ActorButton("Door", 2),
-  ActorButton("Hand", 3),
+  ActorButton("Door", 9)
 };
+
 
 void setup() {
   Serial.begin(500000);
   Serial.setTimeout(50);
-  director.Assign(actors, 4);
-  director.Assign(buttons, 2);
+  director.Assign(actors, 1);
+  director.StartServos();
+  director.Assign(buttons, 1);
 }
 
 void loop() {
   director.Listen();
+  delay(1);
 }

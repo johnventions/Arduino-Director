@@ -1,4 +1,6 @@
 var director;
+var wavesurfer;
+var paused;
 var socket = io();
 
 function initiate() {
@@ -77,6 +79,7 @@ function initiate() {
                 this.activeSequence = sequence;
                 $.get("/api/machines/" + this.activeMachine + "/sequences/" + sequence._id, function(data) {
                     this.castComponents(data);
+                    this.setupSequence();
                 }.bind(this));
             },
             saveSequence: function() {
@@ -92,6 +95,21 @@ function initiate() {
                     comp.push(Object.assign(new Component(val.name), val));
                 }.bind(this));
                 this.activeSequence.components = comp;
+            },
+            setupSequence: function() {
+                if (this.activeSequence.audio != "") {
+                    wavesurfer = WaveSurfer.create({
+                        container: '#waveform',
+                        waveColor: 'violet',
+                        progressColor: 'purple',
+                        minPxPerSec: 50,
+                        scrollParent: true,
+                    });
+                    wavesurfer.load(this.activeSequence.audio);
+                    wavesurfer.on('seek', function(t) {
+                        this.$store.commit('setTime', wavesurfer.getCurrentTime());
+                    }.bind(this));
+                }
             },
             addMachine: function() {
                 var pkg = {
@@ -144,8 +162,16 @@ function initiate() {
                 this.curTime = 0;
                 this.lastTime = new Date().getTime();
                 this.linkMotors(seq);
+                paused = false;
+                if (seq.audio != "") {
+                    wavesurfer.seekTo(0);
+                    wavesurfer.play();
+                }
                 clearInterval(this.interval);
                 this.interval = setInterval(function() {
+                    if (paused) {
+                        return;
+                    }
                     var d2 =  new Date().getTime();
                     var delta = (d2 - this.lastTime)/1000; 
                     seq.components.forEach(function(comp) {
@@ -163,6 +189,20 @@ function initiate() {
                         clearInterval(this.interval);
                     }
                 }.bind(this), delta)
+            },
+            pauseSequence: function(seq) {
+                if (!paused) {
+                    if (seq.audio != "") { 
+                        wavesurfer.pause();
+                    }
+                } else {
+                    if (seq.audio != "") { 
+                        wavesurfer.play();
+                        this.lastTime = new Date().getTime();
+                    }
+                }
+                paused = !paused;
+                
             },
             processData: function(comp, items) {
                 items.forEach(function(i) {

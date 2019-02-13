@@ -5,8 +5,7 @@
         <link rel="stylesheet" href="/styles.css">
     </head>
     <body>
-        <div id="director">
-        <main class='container-fluid' v-cloak>
+        <main class='container-fluid' v-cloak id="director">
             <div class='row'>
                 <div class='col-3'>
                     <h5>Devices</h5>
@@ -56,6 +55,15 @@
                     <div id="sequence-list" v-if="activeSequence">
                         <div class='row'>
                             <div class='col-10'>
+                                <h4>{{ activeSequence.name }}</h4>
+                            </div>
+                            <div class='col-2'>
+                                <span class='btn btn-success' v-on:click="saveSequence()">
+                                    Save
+                                    <i class="far fa-save"></i>
+                                </span>
+                            </div>
+                            <div class='col-2'>
                                 <div class='btn-group'>
                                     <span class='btn btn-primary'
                                         v-on:click="zoom(-10)">
@@ -82,17 +90,15 @@
                                         <i class="fas fa-play-circle"></i>
                                     </span>
                                     <span class='btn btn-danger'
-                                        v-on:click="playSequence(activeSequence)">
+                                        v-on:click="pauseSequence(activeSequence)">
                                         <i class="far fa-pause-circle"></i>
                                     </span>
                                 </div>
-                                <h4>{{ activeSequence.name }}</h4>
                             </div>
-                            <div class='col-2'>
-                                <span class='btn btn-success' v-on:click="saveSequence()">
-                                    Save
-                                    <i class="far fa-save"></i>
-                                </span>
+                            <div class='col-10'>
+                                    <div id="waveform">
+
+                                        </div>
                             </div>
                         </div>
                         <director-component
@@ -105,8 +111,8 @@
                 </div>
             </div>
         </main>
-    </div>
     </body>
     <script src="/vendor.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js"></script>
     <script src="/main.js"></script>
 </html>

@@ -12,7 +12,7 @@ Vue.component('director-chart', {
             return (n * this.$store.state.scale) + offset - 5;
         },
         graphLength: function() {
-            return 10;
+            return this.activeSequence.duration ? parseInt(this.activeSequence.duration) : 10;
         },
         intervalPos() {
             return (this.$store.state.curTime * this.$store.state.scale) + offset;
@@ -34,6 +34,9 @@ Vue.component('director-chart', {
             return 180 - y;
         }
     },
+    computed: Vuex.mapState({
+        activeSequence: state => state.activeSequence,
+    }),
     template: `<svg height="200" width="100%" v-on:click="component.click($event, component)">
     <line :x1="component.startX()"
             :x2="component.startX()"

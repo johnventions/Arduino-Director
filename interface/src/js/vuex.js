@@ -33,6 +33,12 @@ const store = new Vuex.Store({
         },
         setSequence (state, s) {
             state.activeSequence = s;
+        },
+        setComponents (state, c) {
+            state.activeSequence.components = c;
+        },
+        addComponent (state, c) {
+            state.activeSequence.components.push(c);
         }
     },
     getters: {

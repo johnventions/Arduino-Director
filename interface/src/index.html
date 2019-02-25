@@ -71,6 +71,10 @@
                                     <input v-model="activeSequence.audio">
                                     <i class="fas fa-sync refresh" v-on:click="setupAudio()"></i>
                                 </div>
+                                <div>
+                                    <label>Duration:</label>
+                                    <input v-model="activeSequence.duration" class='duration' type="number"> seconds
+                                </div>
                             </div>
                             <div class='col-2'>
                                 <span class='btn btn-success' v-on:click="saveSequence()">

@@ -15,7 +15,6 @@ function initiate() {
             command: "",
             activeMachine: null,
             machines: [],
-            activeSequence: null,
             sequences: [],
             interval: null,
             curTime: 0,
@@ -78,35 +77,37 @@ function initiate() {
             },
             selectSequence: function(sequence) {
                 sequence.components = [];
-                this.activeSequence = sequence;
+                this.$store.commit('setSequence', sequence);
                 $.get("/api/machines/" + this.activeMachine + "/sequences/" + sequence._id, function(data) {
                     this.castComponents(data);
                     this.setupSequence();
                 }.bind(this));
             },
             saveSequence: function() {
-                $.post("/api/machines/" + this.activeMachine + "/sequences/" + this.activeSequence._id, 
-                    this.activeSequence,
+                var s = this.activeSequence;
+                $.post("/api/machines/" + this.activeMachine + "/sequences/" + s._id, 
+                    s,
                     function(data) {
                         console.log(data);
                     }.bind(this));
             },
             back: function() {
-                this.activeSequence = null;
+                this.$store.commit('setSequence', null);
             },
             castComponents: function(seq) {
                 var comp = [];
                 seq.components.forEach(function(val) {
                     comp.push(Object.assign(new Component(val.name), val));
                 }.bind(this));
-                this.activeSequence.components = comp;
+                this.$store.commit('setComponents', comp);
             },
             setupSequence: function() {
                 this.setupAudio();
             },
             setupAudio: function() {
                 $("#waveform").empty();
-                if (this.activeSequence.audio != "" && this.activeSequence.audio != null) {
+                var s = this.activeSequence;
+                if (s.audio != "" && s.audio != null) {
                     wavesurfer = WaveSurfer.create({
                         container: '#waveform',
                         waveColor: 'violet',
@@ -114,7 +115,7 @@ function initiate() {
                         minPxPerSec: 50,
                         scrollParent: true,
                     });
-                    wavesurfer.load(this.activeSequence.audio);
+                    wavesurfer.load(s.audio);
                     wavesurfer.on('seek', function(t) {
                         this.$store.commit('setTime', wavesurfer.getCurrentTime());
                     }.bind(this));
@@ -142,18 +143,19 @@ function initiate() {
                     function(data) {
                         var s = this.castSequences([data]);
                         this.sequences.push(s[0]);
-                        this.activeSequence = this.sequences[this.sequences.length - 1];
+                        this.$store.commit('setSequence', this.sequences[this.sequences.length - 1]);
                     }.bind(this)
                     );
             },
             addComponent: function() {
+                var s = this.activeSequence;
                 var pkg = {
                     name: "New Component"
                 };
-                $.post("/api/machines/" + this.activeMachine + "/sequences/" + this.activeSequence._id + "/components",
+                $.post("/api/machines/" + this.activeMachine + "/sequences/" + s._id + "/components",
                     pkg,
                     function(data) {
-                        this.activeSequence.components.push(Object.assign(new Component(), data));
+                        this.$store.commit('addComponent', Object.assign(new Component(), data));
                 }.bind(this));
             },
             linkMotors: function(seq) {
@@ -232,6 +234,9 @@ function initiate() {
                 this.$store.commit("changeOffset", x);
             }
         },
+        computed: Vuex.mapState({
+            activeSequence: state => state.activeSequence,
+        }),
         created: function() {
             console.log("App initialized");
             this.getPorts();

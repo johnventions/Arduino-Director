@@ -1,13 +1,14 @@
 
 # Director
-Director is a web-based animatronics control system for Arduino created by [John Horton](https://twitter.com/johnventions). Director gives you a web interface for planning out and testing servo motion instead of hard-coding sequences onto a microcontroller. All of the data is stored on the computer and sent via Serial to your Arduino, which is constantly listening for commands.
+Director is a web-based animatronics control system for Arduino created by [John Horton](https://twitter.com/johnventions). Director gives you a web interface for planning out and testing servo motion instead of hard-coding sequences onto a microcontroller. All of the data is stored on the computer and sent via Serial to your Arduino, which is constantly listening for commands. With the most basic version of Director a custom animatronic can be built with less than 30 lines of code.
 
 This project contains both the C++ Library for Director to include in your Arduino files as well as the web interface software (Node Express server with a Vue front-end and MongoDB storage) needed to plan out your animatronic motion.
 
 ## Requirements
-[NPM](https://www.npmjs.com/get-npm) (Node Package Manager)
-[Mongo DB](https://docs.mongodb.com/v3.2/administration/install-community/) running on port 27017
-[Gulp](https://gulpjs.org/getting-started.html)  - Task manager for compiling JS and CSS
+
+ - [NPM](https://www.npmjs.com/get-npm) (Node Package Manager)
+ -  [Mongo DB](https://docs.mongodb.com/v3.2/administration/install-community/) - running on port 27017 
+ - [Gulp](https://gulpjs.org/getting-started.html) - Task manager for compiling JS and CSS
 
 ## Arduino Basic Example
 The most basic example of Director involves creating a Director object and the Actor Servos that it can control. Adjust the sample code to your setup and flash to your Arduino device. Alternatively, see the example in the examples folder.
@@ -63,19 +64,27 @@ When a machine is selected, the list of Sequences will appear. Each animatronic 
 ![Screen 3](https://i.imgur.com/OFO9jX3.png)
 
 ### Sequence Edit
-When a sequence is selected it will allow you to put in the URL of the audio track associated with the sequence. Click the graph to add a new point to the timeline or drag/drop existing points. Shift + click to delete a point.
-From the menu in the top left you can zoom in/out of the timeline or pan left/right. The play/pause buttons will activate the sequence and send the commands to the Arduino.
+When a sequence is selected it will allow you to put in the URL of the audio track associated with the sequence. 
+
+ - Click the graph to add a new point to the timeline or drag/drop existing points. 
+ - Shift + click to delete a point.
+ - Magnifying glass icons to zoom in/out of the timeline
+ - Left / Right arrows to pan left/right.
+ - The play/pause buttons will activate the sequence and send the commands to the Arduino
+ 
+ The name next to each chart should match exactly to an Actor servo so that the interface knows which command to send
 ![Screen 4](https://i.imgur.com/4LbAqst.png)
 
 When the sequence is being played, a preview of the motion will be shown on the screen to help visualize the activity.
 ![Screen 5](https://i.imgur.com/A8kBDiI.png)
 
 ## Upcoming Features
- - "Record" Ability - record motion data via a potentiometer
+ - "Record" Function - record motion data via a potentiometer
  - "Actor Buttons" - connect button inputs to trigger sequences
  - "Actor Functions" - custom C++ functions that can be called via the interface. For example:
 	 - Trigger LEDs
 	 - Activate relays
+ - Audio upload button
  - Autoplay functionality (Routines)
 
 ## Thanks

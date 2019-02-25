@@ -1,7 +1,7 @@
 Vue.component('director-list-item', {
     props: ['item'],
     template: `
-    <div class='row'>
+    <div class='row director-list'>
         <div class='col-10'>
                 {{ item.name }}
         </div>

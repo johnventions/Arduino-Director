@@ -2,3 +2,4 @@ node_modules/
 .vscode/
 interface/dist/
 interface/.vs/
+snapshots/

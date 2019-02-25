@@ -2,7 +2,11 @@ Vue.component('director-chart', {
     props: ['component'],
     methods: {
         graphLabelY: function(n) {
-            return 180 - (n*45) + 10;
+            return 180 - ((n-1) *45);
+        },
+        graphLabelPosY: function(n) {
+            var y = ((n-1) * 45) + 5;
+            return Math.max(10, y);
         },
         graphLabelX: function(n) {
             return (n * this.$store.state.scale) + offset - 5;
@@ -44,12 +48,13 @@ Vue.component('director-chart', {
     <circle v-for="(data, i) in component.data"
             :cx="xPos(data.x)"
             :cy="yPos(data.y)"
+            :data-y="data.y"
             :transform="xTransform()"
             v-on:mousedown="component.startDrag($event, i)"
             v-on:mouseup="component.stopDrag($event, i)"
             r="5" stroke="black" stroke-width="1" fill="red"/>
-            <text v-for="n in 4"
-                x="0" :y="graphLabelY(n)">
+            <text v-for="n in 5"
+                x="0" :y="graphLabelPosY(n)">
                 {{ graphLabelY(n) }}
             </text>
             <text v-for="n in graphLength()"

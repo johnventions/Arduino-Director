@@ -30,7 +30,9 @@ function initiate() {
                     });
                     if (active != null) {
                         this.activePort = active.comName;
-                        this.getOptions();
+                        setTimeout(function() {
+                            this.getOptions();
+                        }.bind(this), 1000);
                     }
                 }.bind(this));
             },
@@ -89,6 +91,9 @@ function initiate() {
                         console.log(data);
                     }.bind(this));
             },
+            back: function() {
+                this.activeSequence = null;
+            },
             castComponents: function(seq) {
                 var comp = [];
                 seq.components.forEach(function(val) {
@@ -97,7 +102,11 @@ function initiate() {
                 this.activeSequence.components = comp;
             },
             setupSequence: function() {
-                if (this.activeSequence.audio != "") {
+                this.setupAudio();
+            },
+            setupAudio: function() {
+                $("#waveform").empty();
+                if (this.activeSequence.audio != "" && this.activeSequence.audio != null) {
                     wavesurfer = WaveSurfer.create({
                         container: '#waveform',
                         waveColor: 'violet',
@@ -112,8 +121,9 @@ function initiate() {
                 }
             },
             addMachine: function() {
+                var machinename = prompt("Machine Name", "New Machine");
                 var pkg = {
-                    name: "New Machine"
+                    name: machinename
                 };
                 $.post("/api/machines",
                     pkg,
@@ -123,8 +133,9 @@ function initiate() {
                     );
             },
             addSequence: function() {
+                var machinename = prompt("Sequence Name", "New Sequence");
                 var pkg = {
-                    name: "New Sequence"
+                    name: machinename
                 };
                 $.post("/api/machines/" + this.activeMachine + "/sequences",
                     pkg,
@@ -257,7 +268,9 @@ function sockets() {
     });
     socket.on("CONNECTED", (port) => {
         director.activePort = port;
-        director.getOptions();
+        setTimeout(function() {
+            director.getOptions();
+        }, 2000);
     });
     socket.on("DISCONNECTED", () => {
         director.activePort = null;

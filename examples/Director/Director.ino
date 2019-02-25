@@ -20,7 +20,7 @@ ActorButton buttons[] = {
 void setup() {
   Serial.begin(500000);
   Serial.setTimeout(50);
-  director.Assign(actors, 1);
+  director.Assign(actors, 3);
   director.StartServos();
   director.Assign(buttons, 1);
 }

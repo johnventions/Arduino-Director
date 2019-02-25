@@ -7,36 +7,35 @@
     <body>
         <main class='container-fluid' v-cloak id="director">
             <div class='row'>
-                <div class='col-3'>
-                    <h5>Devices</h5>
+                <div class='col-3 col-xl-2'>
+                    <h5>Devices<i class="fas fa-sync refresh" v-on:click="getPorts()"></i></h5>
                     <dl>
-                        <dd v-for="port in ports">
+                        <dd v-for="port in ports" class='director-list'>
                                 {{ port.comName }}
                                 <span class='btn btn-primary' v-on:click="connect(port)" v-if="activePort == null">Connect</span>
                                 <span class='btn btn-primary' v-on:click="disconnect()" v-if="activePort == port.comName">Disconnect</span>
                         </dd>
                     </dl>
                     <div v-if="activePort">
-                        <h5>Actors</h5>
+                        <h5>Actors<i class="fas fa-sync refresh" v-on:click="getOptions()"></i></h5>
                         <div v-for="actor in actors">
                             {{ actor.id }} | {{ actor.name }}
                         </div>
                     </div>
-                    <div v-if="activePort">
+                    <div v-if="1 == 0 && activePort">
                             <h5>Buttons</h5>
                             <div v-for="button in buttons">
                                 {{ button.id }} | {{ button.name }}
                             </div>
                         </div>
                     <div v-if="activePort">
-                        <span class='btn btn-primary' v-on:click="getOptions()">Refresh</span>
                         <h5>Commands</h5>
                         <input v-model="command">
                         <span class='btn btn-primary' v-on:click="sendCommand(command)">Send</span>
                     </div>
 
                 </div>
-                <div class='col-9'>
+                <div class='col-9 col-xl-10'>
                     <director-machines
                         v-if="activeMachine == null"
                         :machines="machines"
@@ -45,17 +44,33 @@
                         ></director-machines>
                     <div id="sequence-list" v-if="activeMachine && activeSequence == null">
                             <h5>Sequences</h5>
-                            <director-list-item 
-                                v-for="sequence in sequences"
-                                :key="sequence._id"
-                                :item="sequence"
-                                v-on:select-item="selectSequence(sequence)"/>
-                            <span class='btn btn-primary' v-on:click="addSequence()">Add Sequence</span>
+                            <div>
+                                    <director-list-item 
+                                    v-for="sequence in sequences"
+                                    :key="sequence._id"
+                                    :item="sequence"
+                                    v-on:select-item="selectSequence(sequence)">
+                            </div>
+                            <span class='btn btn-primary btn-right' v-on:click="addSequence()">Add Sequence</span>
                     </div>
                     <div id="sequence-list" v-if="activeSequence">
-                        <div class='row'>
-                            <div class='col-10'>
-                                <h4>{{ activeSequence.name }}</h4>
+                        <div class='row sequence-header'>
+                            <div class='col-2'>
+                                <span class='btn btn-danger' v-on:click="back()">
+                                        <i class="fas fa-backspace"></i>
+                                        Back
+                                    </span>
+                            </div>
+                            <div class='col-8'>
+                                <div>
+                                    <label>Sequence:</label>
+                                    <input class='sequence-name' v-model="activeSequence.name">
+                                </div>
+                                <div>
+                                    <label>Audio:</label>
+                                    <input v-model="activeSequence.audio">
+                                    <i class="fas fa-sync refresh" v-on:click="setupAudio()"></i>
+                                </div>
                             </div>
                             <div class='col-2'>
                                 <span class='btn btn-success' v-on:click="saveSequence()">
@@ -75,11 +90,11 @@
                                     </span>
                                 </div>
                                 <div class='btn-group'>
-                                        <span class='btn btn-primary'
+                                        <span class='btn btn-warning'
                                             v-on:click="shift(0.25)">
                                                 <i class="fas fa-arrow-left"></i>
                                         </span>
-                                        <span class='btn btn-primary'
+                                        <span class='btn btn-warning'
                                             v-on:click="shift(-0.25)">
                                                 <i class="fas fa-arrow-right"></i>
                                         </span>
@@ -97,8 +112,7 @@
                             </div>
                             <div class='col-10'>
                                     <div id="waveform">
-
-                                        </div>
+                                    </div>
                             </div>
                         </div>
                         <director-component
@@ -113,6 +127,5 @@
         </main>
     </body>
     <script src="/vendor.js"></script>
-    <script src="https://unpkg.com/wavesurfer.js"></script>
     <script src="/main.js"></script>
 </html>

@@ -1,7 +1,7 @@
 Vue.component('director-component', {
     props: ['component'],
     template: `
-        <div  class="row">
+        <div class="row director-component">
             <div class='col-2'>
                 <input v-model="component.name">
                 <div class='preview-container'>

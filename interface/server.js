@@ -1,6 +1,7 @@
 var express = require("express");
 const path = require('path');
 var bodyParser = require("body-parser");
+const opn = require('opn');
 
 const socketIO = require('socket.io');
 const SerialPort = require('serialport');
@@ -57,7 +58,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("Database Connection Ready!");
-
+  opn('http://localhost:5000/');
 });
 
 /* ####################################
@@ -68,7 +69,9 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
     io.emit('message', "Welcome friend!");
     socket.on("SerialWrite", (message) => {
-        activePort.write(message);
+        if (activePort != null) {
+            activePort.write(message);
+        }
     });
 });
 

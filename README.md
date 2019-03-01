@@ -50,6 +50,9 @@ void  loop() {
 ```
 After running "npm start", the application should open in your web browser at locahost:5000
 
+## Demo Video
+[Here is a demo video](https://www.youtube.com/watch?v=AfgRimX_5pM) of the interface running with 3 motors. The # of servos is only limited by the number of digital pins available on your device.
+
 ## Interface Tutorial
 ### Home screen
 The home screen will scan the ports and show all of the connected devices in the sidebar. In the main panel, select an existing animatronic or click "Add Machine" to create a new one.

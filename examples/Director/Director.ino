@@ -13,7 +13,7 @@ ActorServo actors[] = {
 };
 
 ActorButton buttons[] = {
-  ActorButton("Door", 9)
+  ActorButton("Door", 1)
 };
 
 

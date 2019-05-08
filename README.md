@@ -8,7 +8,7 @@ This project contains both the C++ Library for Director to include in your Ardui
 
  - [NPM](https://www.npmjs.com/get-npm) (Node Package Manager)
  -  [Mongo DB](https://docs.mongodb.com/v3.2/administration/install-community/) - running on port 27017 
- - [Gulp](https://gulpjs.org/getting-started.html) - Task manager for compiling JS and CSS
+ - [GulpJS](https://gulpjs.com/docs/en/getting-started/quick-start) - Task manager for compiling JS and CSS
 
 ## Arduino Basic Example
 The most basic example of Director involves creating a Director object and the Actor Servos that it can control. Adjust the sample code to your setup and flash to your Arduino device. Alternatively, see the example in the examples folder.
@@ -80,6 +80,14 @@ When a sequence is selected it will allow you to put in the URL of the audio tra
 
 When the sequence is being played, a preview of the motion will be shown on the screen to help visualize the activity.
 ![Screen 5](https://i.imgur.com/A8kBDiI.png)
+
+### Audio Track
+To add an audio track, place the file in the 'interface/dist folder', or a folder inside of dist (like "audio"). In the audio track field, type in the file name of the file. For example "/myfile.mp3" or "/audio/myfile.mp3" - do not include the "interface/dist" portion. Then hit the refresh icon to have the page load the audio file.
+
+Audio can use mp3, wav, or any file supported by the Wavesurfer JS library
+
+### Save Button
+Be sure to hit the "Save" button when you're happy with your updates, the interface does not save automatically :)
 
 ## Upcoming Features
  - "Record" Function - record motion data via a potentiometer

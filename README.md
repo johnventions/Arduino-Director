@@ -4,6 +4,9 @@ Director is a web-based animatronics control system for Arduino created by [John
 
 This project contains both the C++ Library for Director to include in your Arduino files as well as the web interface software (Node Express server with a Vue front-end and MongoDB storage) needed to plan out your animatronic motion.
 
+## Demo Video
+[Here is a demo video](https://www.youtube.com/watch?v=AfgRimX_5pM) of the interface running with 3 motors. The # of servos is only limited by the number of digital pins available on your device.
+
 ## Requirements
 
  - [NPM](https://www.npmjs.com/get-npm) (Node Package Manager)
@@ -50,8 +53,6 @@ void  loop() {
 ```
 After running "npm start", the application should open in your web browser at locahost:5000
 
-## Demo Video
-[Here is a demo video](https://www.youtube.com/watch?v=AfgRimX_5pM) of the interface running with 3 motors. The # of servos is only limited by the number of digital pins available on your device.
 
 ## Interface Tutorial
 ### Home screen
